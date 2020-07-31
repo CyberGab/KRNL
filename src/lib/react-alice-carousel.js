@@ -27,11 +27,12 @@ export default class AliceCarousel extends React.PureComponent {
     this.hasUserAction = false
     this.slideTo = this.slideTo.bind(this)
     this.slidePrev = this.slidePrev.bind(this)
-    this.slideNext = this.slideNext.bind(this)
+	this.slideNext = this.slideNext.bind(this)
+    this._handleOnKeyUp = this._handleOnKeyUp.bind(this)	
     this._onTouchMove = this._onTouchMove.bind(this)
     this._handleOnDotClick = this._handleOnDotClick.bind(this)
     this._throttledOnTouchMove = Utils.throttle(this._onTouchMove, 10)
-    this._debouncedHandleOnWindowResize = Utils.debounce(this._handleOnWindowResize, 100)
+	this._debouncedHandleOnWindowResize = Utils.debounce(this._handleOnWindowResize, 100)
   }
 
   componentDidMount() {
@@ -210,11 +211,18 @@ export default class AliceCarousel extends React.PureComponent {
   _handleOnKeyUp = (e) => {
     switch (e.code) {
       case 'Space':
-        return this.props.autoPlay && this._playPauseToggle()
+		//return this.props.autoPlay && this._playPauseToggle()
+		this.props.autoPlay && this._playPauseToggle()
+        break;
       case 'ArrowLeft':
-        return this.slidePrev()
+		this.slidePrev()
+        break;
       case 'ArrowRight':
-        return this.slideNext()
+		this.slideNext()
+        break;
+	}
+    if(this.props.onKeyUp){
+      this.onKeyUp(e,this);
     }
   }
 
